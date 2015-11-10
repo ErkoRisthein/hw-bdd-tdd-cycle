@@ -62,6 +62,48 @@ describe MoviesController do
       get :same_director, :movie_id => start_wars.id
 
       expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to eq("'Star Wars' has no director info")
+    end
+  end
+  
+  describe 'POST create' do
+    it 'successfully creates the movie' do
+      post :create, :movie => { :title => 'Aladdin' }
+      
+      expect(response).to redirect_to(movies_path)
+      expect(flash[:notice]).to eq("Aladdin was successfully created.")
+    end
+  end
+  
+  describe 'GET edit' do
+    it 'successfully assigns the movie to edit' do
+      start_wars = Movie.create(:title => 'Star Wars') 
+    
+      get :edit, :id => start_wars.id
+      
+      expect(assigns(:movie)).to eq(start_wars)
+    end
+  end
+  
+  describe 'GET show' do
+    it 'successfully assigns the movie to show' do
+      start_wars = Movie.create(:title => 'Star Wars') 
+    
+      get :show, :id => start_wars.id
+      
+      expect(assigns(:movie)).to eq(start_wars)
+    end
+  end
+  
+  describe 'GET destroy' do
+    it 'successfully deletes the movie' do
+      start_wars = Movie.create(:title => 'Star Wars') 
+    
+      get :destroy, :id => start_wars.id
+      
+      expect(response).to redirect_to(movies_path)
+      expect(flash[:notice]).to eq("Movie 'Star Wars' deleted.")
+      expect(Movie.all).to be_empty
     end
   end
 
