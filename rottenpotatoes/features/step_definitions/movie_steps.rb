@@ -6,5 +6,6 @@ end
 
 
 Then(/^the director of "(.*?)" should be "(.*?)"$/) do |movie, director|
-  pending # express the regexp above with the code you wish you had
+  expect(page.body).to match(/#{movie}/m)
+  expect(page.find('#director').text).to match(/Director: #{director}/m)
 end
