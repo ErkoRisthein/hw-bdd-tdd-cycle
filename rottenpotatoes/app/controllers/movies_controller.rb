@@ -60,5 +60,17 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
+  def same_director
+    @movie = Movie.find(params[:movie_id])
+    if @movie.director.blank?
+      flash[:notice] = "'#{@movie.title}' has no director info"
+      redirect_to root_path
+    else
+      index
+      @movies = Movie.where(:director => @movie.director)
+      render 'index'
+    end
+  end
 
 end
